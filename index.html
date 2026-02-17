@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koa — Small-Batch Hawaiian Honey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #faf6f0;
+            --color-surface: #fff9f0;
+            --color-text: #2c1810;
+            --color-text-muted: #6b5344;
+            --color-honey: #d4a853;
+            --color-amber: #8b6914;
+            --color-border: #e8ddd0;
+            --font-display: 'Fraunces', serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Subtle grain */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            line-height: 1.2;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, var(--color-bg), transparent);
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-text);
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-text);
+        }
+
+        .nav-cta {
+            background: var(--color-honey);
+            color: var(--color-text);
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--color-amber);
+            color: var(--color-surface);
+            transform: translateY(-2px);
+        }
+
+        /* Organic blob shapes */
+        .blob {
+            position: absolute;
+            border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
+            pointer-events: none;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(212, 168, 83, 0.15), transparent 70%);
+            top: 10%;
+            right: -10%;
+            animation: blobFloat 20s ease-in-out infinite;
+        }
+
+        .blob-2 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(212, 168, 83, 0.1), transparent 70%);
+            bottom: 20%;
+            left: -5%;
+            animation: blobFloat 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes blobFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(5deg); }
+            66% { transform: translate(-20px, 20px) rotate(-5deg); }
+        }
+
+        /* Hero - Image First */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+        }
+
+        .hero-image {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-visual {
+            width: 100%;
+            height: 100%;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Honey pour placeholder */
+        .honey-pour {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                180deg,
+                var(--color-honey) 0%,
+                #c9952f 30%,
+                #b8861f 50%,
+                var(--color-amber) 70%,
+                #6b4f10 100%
+            );
+            position: relative;
+        }
+
+        .honey-pour::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 40%;
+            background: linear-gradient(
+                180deg,
+                var(--color-honey),
+                rgba(212, 168, 83, 0.8)
+            );
+            border-radius: 0 0 30px 30px;
+            filter: blur(1px);
+        }
+
+        .honey-pour::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 30% 40%, rgba(255,255,255,0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(255,255,255,0.1) 0%, transparent 40%);
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6rem;
+            position: relative;
+        }
+
+        .hero-tagline {
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-tagline::before {
+            content: "";
+            width: 40px;
+            height: 1px;
+            background: var(--color-honey);
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--color-amber);
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            max-width: 400px;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--color-text);
+            color: var(--color-surface);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 100px;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .hero-btn:hover {
+            background: var(--color-amber);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 105, 20, 0.2);
+        }
+
+        .hero-btn svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-btn:hover svg {
+            transform: translateX(4px);
+        }
+
+        /* Origin Story - Editorial */
+        .origin {
+            padding: 10rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .origin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 0.8fr;
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .origin-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            position: sticky;
+            top: 8rem;
+        }
+
+        .origin-main {
+            position: relative;
+        }
+
+        .origin-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .origin-text {
+            font-size: 1.05rem;
+            color: var(--color-text-muted);
+            line-height: 2;
+            margin-bottom: 2rem;
+        }
+
+        .origin-text:first-of-type::first-letter {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            float: left;
+            line-height: 1;
+            padding-right: 1rem;
+            color: var(--color-honey);
+        }
+
+        .origin-aside {
+            position: sticky;
+            top: 8rem;
+        }
+
+        .pull-quote {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--color-amber);
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--color-honey);
+            line-height: 1.6;
+        }
+
+        /* Dotted divider */
+        .dotted-divider {
+            display: flex;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+
+        .dotted-divider span {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .dotted-divider span::before,
+        .dotted-divider span::after {
+            content: "•••••";
+            color: var(--color-honey);
+            letter-spacing: 0.5em;
+        }
+
+        /* Products - Horizontal Scroll */
+        .products {
+            padding: 6rem 0;
+            background: var(--color-surface);
+            position: relative;
+        }
+
+        .products::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--color-border), transparent);
+        }
+
+        .products-header {
+            padding: 0 4rem;
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .products-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+        }
+
+        .products-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .products-nav button {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid var(--color-border);
+            background: var(--color-bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .products-nav button:hover {
+            background: var(--color-honey);
+            border-color: var(--color-honey);
+        }
+
+        .products-nav button svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--color-text);
+        }
+
+        .products-scroll {
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 2rem 4rem;
+        }
+
+        .products-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .products-track {
+            display: flex;
+            gap: 2rem;
+            width: max-content;
+        }
+
+        .product-card {
+            width: 320px;
+            flex-shrink: 0;
+            background: var(--color-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--color-border);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(44, 24, 16, 0.1);
+        }
+
+        .product-image {
+            height: 280px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Honey jar placeholder */
+        .jar-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--color-surface), var(--color-bg));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .jar-shape {
+            width: 120px;
+            height: 160px;
+            background: linear-gradient(180deg, 
+                var(--color-honey) 0%, 
+                #c9952f 50%, 
+                var(--color-amber) 100%
+            );
+            border-radius: 8px 8px 40px 40px;
+            position: relative;
+            box-shadow: 
+                inset -15px 0 30px rgba(255,255,255,0.2),
+                inset 15px 0 30px rgba(0,0,0,0.1),
+                0 10px 40px rgba(139, 105, 20, 0.2);
+        }
+
+        .jar-shape::before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 25px;
+            background: var(--color-text);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .jar-shape::after {
+            content: "KOA";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--color-surface);
+            letter-spacing: 0.1em;
+        }
+
+        /* Shimmer on hover */
+        .product-card:hover .jar-placeholder::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,0.3),
+                transparent
+            );
+            animation: jarShimmer 0.8s ease-out;
+        }
+
+        @keyframes jarShimmer {
+            to { left: 150%; }
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-variety {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--color-honey);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-name {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            margin-bottom: 0.75rem;
+            font-weight: 400;
+        }
+
+        .product-desc {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--color-amber);
+        }
+
+        .product-size {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+
+        /* Process Section */
+        .process {
+            padding: 10rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .process-header {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .process-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .process-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .process-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .process-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .process-icon::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1px dashed var(--color-honey);
+            animation: spin 30s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .process-icon svg {
+            width: 48px;
+            height: 48px;
+            stroke: var(--color-amber);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .process-step {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            color: var(--color-honey);
+            margin-bottom: 1rem;
+        }
+
+        .process-name {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .process-desc {
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
+            line-height: 1.7;
+        }
+
+        /* Testimonial */
+        .testimonial {
+            padding: 8rem 4rem;
+            background: var(--color-surface);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .testimonial-quote {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .testimonial-quote::before {
+            content: """;
+            position: absolute;
+            top: -2rem;
+            left: -1rem;
+            font-size: 6rem;
+            color: var(--color-honey);
+            opacity: 0.3;
+            font-family: var(--font-display);
+            line-height: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .testimonial-name {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+        }
+
+        .testimonial-title {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+
+        /* Handwritten style accent */
+        .handwritten {
+            font-family: var(--font-display);
+            font-style: italic;
+            color: var(--color-amber);
+            position: relative;
+        }
+
+        .handwritten::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 2 Q 25 0 50 2 T 100 2' stroke='%23d4a853' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x;
+            background-size: 100px 4px;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 10rem 4rem;
+            text-align: center;
+            position: relative;
+            background-image: 
+                radial-gradient(ellipse at 30% 50%, rgba(212, 168, 83, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(212, 168, 83, 0.08) 0%, transparent 40%);
+        }
+
+        .cta-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-desc {
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            margin-bottom: 3rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .cta-input {
+            flex: 1;
+            padding: 1.25rem 1.5rem;
+            border: 1px solid var(--color-border);
+            border-radius: 100px;
+            background: var(--color-surface);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            color: var(--color-text);
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .cta-input::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        .cta-input:focus {
+            border-color: var(--color-honey);
+        }
+
+        .cta-submit {
+            padding: 1.25rem 2.5rem;
+            background: var(--color-honey);
+            border: none;
+            border-radius: 100px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cta-submit:hover {
+            background: var(--color-amber);
+            color: var(--color-surface);
+            transform: translateY(-2px);
+        }
+
+        .cta-note {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem;
+            background: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-brand {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-tagline {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            line-height: 1.7;
+        }
+
+        .footer-heading {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-amber);
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-text);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-image {
+                position: absolute;
+                inset: 0;
+                opacity: 0.2;
+            }
+
+            .hero-content {
+                padding: 8rem 2rem;
+                position: relative;
+                z-index: 2;
+            }
+
+            .origin-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .origin-label,
+            .origin-aside {
+                position: relative;
+                top: 0;
+            }
+
+            .process-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content {
+                padding: 6rem 1.5rem;
+            }
+
+            .origin {
+                padding: 5rem 2rem;
+            }
+
+            .products-header {
+                padding: 0 2rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+
+            .products-scroll {
+                padding: 2rem;
+            }
+
+            .product-card {
+                width: 280px;
+            }
+
+            .process {
+                padding: 5rem 2rem;
+            }
+
+            .testimonial {
+                padding: 5rem 2rem;
+            }
+
+            .cta {
+                padding: 5rem 2rem;
+            }
+
+            .cta-form {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Koa</div>
+        <ul class="nav-links">
+            <li><a href="#origin">Our Story</a></li>
+            <li><a href="#products">Honey</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#find">Find Us</a></li>
+        </ul>
+        <a href="#products" class="nav-cta">Shop Honey</a>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-image">
+            <div class="hero-visual">
+                <div class="honey-pour"></div>
+            </div>
+        </div>
+        <div class="hero-content">
+            <span class="hero-tagline">Small-Batch Hawaiian Honey</span>
+            <h1 class="hero-title">Honey the way <em>nature</em> intended</h1>
+            <p class="hero-desc">
+                From the volcanic slopes of the Big Island to your table. Raw, unfiltered, and crafted with three generations of beekeeping wisdom.
+            </p>
+            <a href="#products" class="hero-btn">
+                Explore Our Honey
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Origin Story -->
+    <section class="origin" id="origin">
+        <div class="origin-grid">
+            <div class="origin-label">Our Story</div>
+            <div class="origin-main">
+                <h2 class="origin-title">Three generations of Hawaiian beekeeping</h2>
+                <p class="origin-text">
+                    In 1962, my grandfather placed his first hive on the slopes of Mauna Kea. He wasn't trying to start a business — he just loved the bees. He'd spend hours watching them work, learning their patterns, understanding their needs.
+                </p>
+                <p class="origin-text">
+                    Today, we tend over 200 hives across the Big Island. Each location is chosen for the unique flora that surrounds it — from rare Lehua blossoms to wild macadamia flowers. We never heat our honey. We never ultra-filter it. What comes out of the hive is what goes into the jar.
+                </p>
+                <p class="origin-text">
+                    This isn't artisanal as a marketing term. This is honey made the slow way, the only way we know how.
+                </p>
+            </div>
+            <div class="origin-aside">
+                <blockquote class="pull-quote">
+                    "The bees don't hurry. Neither do we."
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <div class="dotted-divider"><span></span></div>
+
+    <!-- Products -->
+    <section class="products" id="products">
+        <div class="products-header">
+            <h2 class="products-title">From Our Hives</h2>
+            <div class="products-nav">
+                <button onclick="document.querySelector('.products-scroll').scrollBy({left: -340, behavior: 'smooth'})">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <button onclick="document.querySelector('.products-scroll').scrollBy({left: 340, behavior: 'smooth'})">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="products-scroll">
+            <div class="products-track">
+                <article class="product-card">
+                    <div class="product-image">
+                        <div class="jar-placeholder">
+                            <div class="jar-shape"></div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-variety">Signature</span>
+                        <h3 class="product-name">Lehua Blossom</h3>
+                        <p class="product-desc">Our rarest honey. Harvested from native Ohia Lehua trees found only in Hawaiian rainforests.</p>
+                        <div class="product-footer">
+                            <span class="product-price">$48</span>
+                            <span class="product-size">12 oz jar</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-image">
+                        <div class="jar-placeholder">
+                            <div class="jar-shape"></div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-variety">Classic</span>
+                        <h3 class="product-name">Wildflower</h3>
+                        <p class="product-desc">A blend of tropical wildflowers. Smooth, versatile, and perfect for everyday use.</p>
+                        <div class="product-footer">
+                            <span class="product-price">$28</span>
+                            <span class="product-size">12 oz jar</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-image">
+                        <div class="jar-placeholder">
+                            <div class="jar-shape"></div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-variety">Limited</span>
+                        <h3 class="product-name">Macadamia</h3>
+                        <p class="product-desc">Nutty and rich. Harvested from our orchard hives during the brief macadamia bloom.</p>
+                        <div class="product-footer">
+                            <span class="product-price">$36</span>
+                            <span class="product-size">12 oz jar</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-image">
+                        <div class="jar-placeholder">
+                            <div class="jar-shape"></div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-variety">Estate</span>
+                        <h3 class="product-name">Waimea Gold</h3>
+                        <p class="product-desc">From our original hives in Waimea. Deep amber color with notes of caramel and vanilla.</p>
+                        <div class="product-footer">
+                            <span class="product-price">$42</span>
+                            <span class="product-size">12 oz jar</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-image">
+                        <div class="jar-placeholder">
+                            <div class="jar-shape"></div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-variety">Gift Set</span>
+                        <h3 class="product-name">Island Collection</h3>
+                        <p class="product-desc">Four 4oz jars featuring our complete range. The perfect introduction to Koa.</p>
+                        <div class="product-footer">
+                            <span class="product-price">$65</span>
+                            <span class="product-size">4 × 4 oz</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section class="process" id="process">
+        <div class="process-header">
+            <span class="process-label">How We Work</span>
+            <h2 class="process-title">Slow by design</h2>
+        </div>
+        <div class="process-grid">
+            <div class="process-card">
+                <div class="process-icon">
+                    <svg viewBox="0 0 48 48">
+                        <circle cx="24" cy="24" r="8"/>
+                        <path d="M24 4v8M24 36v8M4 24h8M36 24h8M9.86 9.86l5.66 5.66M32.48 32.48l5.66 5.66M9.86 38.14l5.66-5.66M32.48 15.52l5.66-5.66"/>
+                    </svg>
+                </div>
+                <span class="process-step">Step One</span>
+                <h3 class="process-name">Harvest</h3>
+                <p class="process-desc">We visit each hive by hand, selecting only frames that are fully capped. Never rushed, never forced. The bees tell us when they're ready.</p>
+            </div>
+            <div class="process-card">
+                <div class="process-icon">
+                    <svg viewBox="0 0 48 48">
+                        <path d="M12 40V20a12 12 0 1 1 24 0v20"/>
+                        <path d="M8 40h32"/>
+                        <path d="M20 28h8"/>
+                        <path d="M20 34h8"/>
+                    </svg>
+                </div>
+                <span class="process-step">Step Two</span>
+                <h3 class="process-name">Extract</h3>
+                <p class="process-desc">Cold-extracted in our Waimea honey house. No heat, no pressure. The honey flows at its own pace, preserving every enzyme and flavor compound.</p>
+            </div>
+            <div class="process-card">
+                <div class="process-icon">
+                    <svg viewBox="0 0 48 48">
+                        <path d="M16 8h16v8a8 8 0 0 1-8 8 8 8 0 0 1-8-8V8z"/>
+                        <path d="M12 28h24v4a12 12 0 0 1-12 12 12 12 0 0 1-12-12v-4z"/>
+                        <path d="M24 24v4"/>
+                    </svg>
+                </div>
+                <span class="process-step">Step Three</span>
+                <h3 class="process-name">Jar</h3>
+                <p class="process-desc">Hand-poured into glass jars within 48 hours of extraction. Each jar is dated and traceable to the exact hive and harvest date.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section class="testimonial">
+        <div class="testimonial-content">
+            <blockquote class="testimonial-quote">
+                I've tried honey from all over the world. Koa's Lehua Blossom is something else entirely — it tastes like <span class="handwritten">the islands</span> themselves.
+            </blockquote>
+            <div class="testimonial-author">
+                <span class="testimonial-name">Sarah Chen</span>
+                <span class="testimonial-title">Chef & Owner, Maui Table Restaurant</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="find">
+        <h2 class="cta-title">Find Koa Near You</h2>
+        <p class="cta-desc">We ship nationwide and partner with select grocers and farmers markets across the islands.</p>
+        <form class="cta-form" onsubmit="event.preventDefault(); alert('Thanks! We\'ll send you the nearest Koa locations.');">
+            <input type="text" class="cta-input" placeholder="Enter your zip code" required>
+            <button type="submit" class="cta-submit">Find Locations</button>
+        </form>
+        <p class="cta-note">Or shop directly at koahoney.com</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div>
+                <div class="footer-brand">Koa</div>
+                <p class="footer-tagline">Small-batch Hawaiian honey from three generations of beekeepers on the Big Island.</p>
+            </div>
+            <div>
+                <h4 class="footer-heading">Shop</h4>
+                <ul class="footer-links">
+                    <li><a href="#">All Honey</a></li>
+                    <li><a href="#">Gift Sets</a></li>
+                    <li><a href="#">Subscriptions</a></li>
+                    <li><a href="#">Wholesale</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-heading">Learn</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">The Hives</a></li>
+                    <li><a href="#">Honey Guide</a></li>
+                    <li><a href="#">Recipes</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-heading">Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Newsletter</a></li>
+                    <li><a href="#">Visit Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Koa Hawaiian Honey. Big Island, Hawai'i</span>
+            <span>Crafted with care, never rushed</span>
+        </div>
+    </footer>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero content fade in
+        gsap.from('.hero-content > *', {
+            y: 40,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: 'power3.out',
+            delay: 0.3
+        });
+
+        // Hero honey pour
+        gsap.from('.honey-pour', {
+            y: -100,
+            opacity: 0,
+            duration: 1.5,
+            ease: 'power3.out'
+        });
+
+        // Origin section
+        gsap.from('.origin-main > *', {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.origin',
+                start: 'top 60%'
+            }
+        });
+
+        gsap.from('.pull-quote', {
+            x: 50,
+            opacity: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.origin',
+                start: 'top 50%'
+            }
+        });
+
+        // Product cards staggered reveal
+        gsap.from('.product-card', {
+            y: 60,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.12,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.products',
+                start: 'top 70%'
+            }
+        });
+
+        // Process cards staggered
+        gsap.from('.process-card', {
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.process',
+                start: 'top 60%'
+            }
+        });
+
+        // Testimonial
+        gsap.from('.testimonial-quote', {
+            y: 40,
+            opacity: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.testimonial',
+                start: 'top 70%'
+            }
+        });
+
+        gsap.from('.testimonial-author', {
+            y: 20,
+            opacity: 0,
+            duration: 0.8,
+            delay: 0.3,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.testimonial',
+                start: 'top 70%'
+            }
+        });
+
+        // Parallax blobs
+        gsap.to('.blob-1', {
+            y: -150,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: 'body',
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 1
+            }
+        });
+
+        gsap.to('.blob-2', {
+            y: 100,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: 'body',
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 1.5
+            }
+        });
+
+        // CTA
+        gsap.from('.cta-title, .cta-desc, .cta-form', {
+            y: 40,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.cta',
+                start: 'top 70%'
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
