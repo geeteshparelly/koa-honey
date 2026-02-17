@@ -164,39 +164,14 @@
             overflow: hidden;
         }
 
-        /* Honey pour placeholder */
-        .honey-pour {
+        /* Hero honey image */
+        .honey-image {
             width: 100%;
             height: 100%;
-            background: linear-gradient(
-                180deg,
-                var(--color-honey) 0%,
-                #c9952f 30%,
-                #b8861f 50%,
-                var(--color-amber) 70%,
-                #6b4f10 100%
-            );
-            position: relative;
+            object-fit: cover;
         }
 
-        .honey-pour::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 40%;
-            background: linear-gradient(
-                180deg,
-                var(--color-honey),
-                rgba(212, 168, 83, 0.8)
-            );
-            border-radius: 0 0 30px 30px;
-            filter: blur(1px);
-        }
-
-        .honey-pour::after {
+        .hero-visual::after {
             content: "";
             position: absolute;
             inset: 0;
@@ -337,6 +312,14 @@
             top: 8rem;
         }
 
+        .origin-image {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
         .pull-quote {
             font-family: var(--font-display);
             font-size: 1.5rem;
@@ -465,76 +448,16 @@
             overflow: hidden;
         }
 
-        /* Honey jar placeholder */
-        .jar-placeholder {
+        /* Product images */
+        .product-img {
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--color-surface), var(--color-bg));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+            object-fit: cover;
+            transition: transform 0.5s ease;
         }
 
-        .jar-shape {
-            width: 120px;
-            height: 160px;
-            background: linear-gradient(180deg, 
-                var(--color-honey) 0%, 
-                #c9952f 50%, 
-                var(--color-amber) 100%
-            );
-            border-radius: 8px 8px 40px 40px;
-            position: relative;
-            box-shadow: 
-                inset -15px 0 30px rgba(255,255,255,0.2),
-                inset 15px 0 30px rgba(0,0,0,0.1),
-                0 10px 40px rgba(139, 105, 20, 0.2);
-        }
-
-        .jar-shape::before {
-            content: "";
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 25px;
-            background: var(--color-text);
-            border-radius: 4px 4px 0 0;
-        }
-
-        .jar-shape::after {
-            content: "KOA";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            color: var(--color-surface);
-            letter-spacing: 0.1em;
-        }
-
-        /* Shimmer on hover */
-        .product-card:hover .jar-placeholder::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255,255,255,0.3),
-                transparent
-            );
-            animation: jarShimmer 0.8s ease-out;
-        }
-
-        @keyframes jarShimmer {
-            to { left: 150%; }
+        .product-card:hover .product-img {
+            transform: scale(1.08);
         }
 
         .product-info {
@@ -1006,7 +929,7 @@
     <section class="hero">
         <div class="hero-image">
             <div class="hero-visual">
-                <div class="honey-pour"></div>
+                <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1200&q=80" alt="Golden honey pour" class="honey-image">
             </div>
         </div>
         <div class="hero-content">
@@ -1041,6 +964,7 @@
                 </p>
             </div>
             <div class="origin-aside">
+                <img src="https://images.unsplash.com/photo-1558211583-d26f610c1eb1?w=500&q=80" alt="Beekeeper with hive" class="origin-image">
                 <blockquote class="pull-quote">
                     "The bees don't hurry. Neither do we."
                 </blockquote>
@@ -1071,9 +995,7 @@
             <div class="products-track">
                 <article class="product-card">
                     <div class="product-image">
-                        <div class="jar-placeholder">
-                            <div class="jar-shape"></div>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=600&q=80" alt="Lehua Blossom Honey" class="product-img">
                     </div>
                     <div class="product-info">
                         <span class="product-variety">Signature</span>
@@ -1087,9 +1009,7 @@
                 </article>
                 <article class="product-card">
                     <div class="product-image">
-                        <div class="jar-placeholder">
-                            <div class="jar-shape"></div>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1471943311424-646960669fbc?w=600&q=80" alt="Wildflower Honey" class="product-img">
                     </div>
                     <div class="product-info">
                         <span class="product-variety">Classic</span>
@@ -1103,9 +1023,7 @@
                 </article>
                 <article class="product-card">
                     <div class="product-image">
-                        <div class="jar-placeholder">
-                            <div class="jar-shape"></div>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=600&q=80" alt="Macadamia Honey" class="product-img">
                     </div>
                     <div class="product-info">
                         <span class="product-variety">Limited</span>
@@ -1119,9 +1037,7 @@
                 </article>
                 <article class="product-card">
                     <div class="product-image">
-                        <div class="jar-placeholder">
-                            <div class="jar-shape"></div>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1601063476271-a159c71ab0b3?w=600&q=80" alt="Waimea Gold Honey" class="product-img">
                     </div>
                     <div class="product-info">
                         <span class="product-variety">Estate</span>
@@ -1135,9 +1051,7 @@
                 </article>
                 <article class="product-card">
                     <div class="product-image">
-                        <div class="jar-placeholder">
-                            <div class="jar-shape"></div>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1612539465965-5d613f3abd0e?w=600&q=80" alt="Island Collection Gift Set" class="product-img">
                     </div>
                     <div class="product-info">
                         <span class="product-variety">Gift Set</span>
