@@ -1289,78 +1289,102 @@
         });
 
         // Origin section
-        gsap.from('.origin-main > *', {
-            y: 50,
-            opacity: 0,
-            duration: 1,
-            stagger: 0.2,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.origin',
-                start: 'top 60%'
+        gsap.fromTo('.origin-main > *', 
+            { y: 50, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                stagger: 0.2,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.origin',
+                    start: 'top 75%',
+                    toggleActions: 'play none none none'
+                }
             }
-        });
+        );
 
-        gsap.from('.pull-quote', {
-            x: 50,
-            opacity: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.origin',
-                start: 'top 50%'
+        gsap.fromTo('.pull-quote', 
+            { x: 50, opacity: 0 },
+            {
+                x: 0,
+                opacity: 1,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.origin',
+                    start: 'top 70%',
+                    toggleActions: 'play none none none'
+                }
             }
-        });
+        );
 
         // Product cards staggered reveal
-        gsap.from('.product-card', {
-            y: 60,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.12,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.products',
-                start: 'top 70%'
+        gsap.fromTo('.product-card', 
+            { y: 60, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.12,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.products',
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                }
             }
-        });
+        );
 
         // Process cards staggered
-        gsap.from('.process-card', {
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.2,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.process',
-                start: 'top 60%'
+        gsap.fromTo('.process-card', 
+            { y: 50, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.2,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.process',
+                    start: 'top 75%',
+                    toggleActions: 'play none none none'
+                }
             }
-        });
+        );
 
         // Testimonial
-        gsap.from('.testimonial-quote', {
-            y: 40,
-            opacity: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.testimonial',
-                start: 'top 70%'
+        gsap.fromTo('.testimonial-quote', 
+            { y: 40, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.testimonial',
+                    start: 'top 80%',
+                    toggleActions: 'play none none none'
+                }
             }
-        });
+        );
 
-        gsap.from('.testimonial-author', {
-            y: 20,
-            opacity: 0,
-            duration: 0.8,
-            delay: 0.3,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.testimonial',
-                start: 'top 70%'
+        gsap.fromTo('.testimonial-author', 
+            { y: 20, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                delay: 0.3,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.testimonial',
+                    start: 'top 80%',
+                    toggleActions: 'play none none none'
+                }
             }
-        });
+        );
 
         // Parallax blobs
         gsap.to('.blob-1', {
@@ -1386,17 +1410,21 @@
         });
 
         // CTA
-        gsap.from('.cta-title, .cta-desc, .cta-form', {
-            y: 40,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.cta',
-                start: 'top 70%'
+        gsap.fromTo('.cta-title, .cta-desc, .cta-form', 
+            { y: 40, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.cta',
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                }
             }
-        });
+        );
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
